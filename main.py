@@ -15,6 +15,7 @@ class Music:
         self.player = None
 
     def add_song(self, url):
+        print("Adding song:", url) 
         self.playlist.append(url)
 
 @client.event
@@ -54,14 +55,14 @@ async def on_message(message):
             if voice: await voice.disconnect()
         if command.startswith("play"):
             voice = client.voice_client_in(message.author.server)
-            j.playlist.pop(0)
             j.player = await voice.create_ytdl_player(j.playlist[0])
             j.player.start()
         if command.startswith("stop"):
             j.player.stop()
         if command.startswith("skip"):
-            if not d.player.is_done():
-                d.player.stop()
+            if not j.player.is_done():
+                voice = client.voice_client_in(message.author.server)
+                j.player.stop()
                 j.playlist.pop(0)
                 j.player = await voice.create_ytdl_player(j.playlist[0])
                 j.player.start()
